@@ -1,19 +1,38 @@
 # Clean Go Code
 
-## Preface: Why Write Clean Code?
+## 序文: なぜクリーンコードを書かなければならないのか？
 
+このドキュメントはクリーンなコードを書きたいと考える開発者の助けになるGoコミュニティのためのリファレンスです。
+あなたが個人の開発者であっても大きなチームに属していてもクリーンなコードを書くことは重要なスキルとなるはずです。
+クリーンコードを書くためのよいパラダイムや一貫性、アクセス可能な基準の確立によって、自分(もしくは他人の)コードを理解するための多くの無駄な時間を浪費することを防ぐことができます。
 This document is a reference for the Go community that aims to help developers write cleaner code. Whether you're working on a personal project or as part of a larger team, writing clean code is an important skill to have. Establishing good paradigms and consistent, accessible standards for writing clean code can help prevent developers from wasting many meaningless hours on trying to understand their own (or others') work.
 
 > <em>We don’t read code, we <b>decode</b> it &ndash; Peter Seibel</em>
 
+
+> <em>コードを読むのではなく、コードを<b>理解</b>する &ndash; Peter Seibel</em>
+
+開発者である私達はときにベストプラクティスを無視して思いつくがままにコード書いてしまう時がある。
+そうするとコードレビューやテストがより難しくなる。
+コードを書くときにそうしてしまうことで、他の人が自分のコードを理解することをより難しくしてしまう。
+しかし自分のコードは使いやすく、読みやすく、メンテナンスしやすくあってほしいと考えている。
+そのために必要なことは簡単にコーディングすることではなく、正しくコーディングすることである。
 As developers, we're sometimes tempted to write code in a way that's convenient for the time being without regard for best practices; this makes code reviews and testing more difficult. In a sense, we're <em>encoding</em>&mdash;and, in doing so, making it more difficult for others to decode our work. But we want our code to be usable, readable, and maintainable. And that requires coding the <em>right</em> way, not the easy way.
 
+このドキュメントはクリーンコードを書くための基礎的な簡単で短い導入から始まる。
+続いて、Go言語特有の具体的なリファクタリング方法について述べていく。
 This document begins with a simple and short introduction to the fundamentals of writing clean code. Later, we'll discuss concrete refactoring examples specific to Go.
 
-##### A short word on `gofmt`
+##### `gofmt`について一言
+`gofmt`についていくつか同意できない点があるため、このツールについて私の見解を少し述べておきたい。
+私はキャメルケースよりもスネークケースが好きだ。そして、定数はすべて大文字であることがよいと考える。さらにごく普通に括弧の位置についても多くの意見を持っている。
+しかし、そうは言っても、`gofmt`は私達にGoのコードを書く上で共通の基準を提供してくれ、それは素晴らしいことだ。
+私自身、一人の開発者として`gofmt`に対して多少の制約を感じることがあります。
+とくにそのルールに同意できない場合はなおさらである。
+しかし、私の意見として、同質的なコードは完全な表現の自由よりも重要なことなのだ。
 I'd like to take a few sentences to clarify my stance on `gofmt` because there are plenty of things I disagree with when it comes to this tool. I prefer snake case over camel case, and I quite like my constant variables to be uppercase. And, naturally, I also have many opinions on bracket placement. *That being said*, `gofmt` does allow us to have a common standard for writing Go code, and that's a great thing. As a developer myself, I can certainly appreciate that Go programmers may feel somewhat restricted by `gofmt`, especially if they disagree with some of its rules. But in my opinion, homogeneous code is more important than having complete expressive freedom.
 
-## Table of Contents
+## 目次
 * [Introduction to Clean Code](#Introduction-to-Clean-Code)
     * [Test-Driven Development](#Test-Driven-Development)
     * [Naming Conventions](#Naming-Conventions)
