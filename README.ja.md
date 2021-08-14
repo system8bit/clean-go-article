@@ -57,12 +57,16 @@ I'd like to take a few sentences to clarify my stance on `gofmt` because there a
 
 ## Introduction to Clean Code
 
+クリーンコードは読みやすく保守しやすいソフトウェア開発を促進する実用的なアイデアです。クリーンコードは、コードベースに対する信頼を確立し、不注意から発生するバグを最小限に抑えることができます。また、コードベースが拡大するとバグ発生リスクの増加し、開発速度は一般的には下がるが、クリーンコードの導入によって開発速度を維持することができる。
 Clean code is the pragmatic concept of promoting readable and maintainable software. Clean code establishes trust in the codebase and helps minimize the chances of careless bugs being introduced. It also helps developers maintain their agility, which typically plummets as the codebase expands due to the increased risk of introducing bugs.
 
 ### Test-Driven Development
 
+テスト駆動開発とは短い開発のサイクルやスプリント中に、頻繁にテストを実施することでである。テスト駆動開発は、開発者にコードの機能や目的に疑問を持つように促すことでソースコードをクリーンに保つことに貢献する。テストを容易に行うために、開発者は短い関数を書くことを動機づけられる。例えばたった4行の関数が40行の関数よりもテストしたり理解することがより簡単なのは間違いない。
+
 Test-driven development is the practice of testing your code frequently throughout short development cycles or sprints. It ultimately contributes to code cleanliness by inviting developers to question the functionality and purpose of their code. To make testing easier, developers are encouraged to write short functions that only do one thing. For example, it's arguably much easier to test (and understand) a function that's only 4 lines long than one that's 40.
 
+テスト駆動開発は以下のサイクルから構成される。
 Test-driven development consists of the following cycle:
 
 1. Write (or execute) a test
@@ -70,28 +74,43 @@ Test-driven development consists of the following cycle:
 3. Refactor your code accordingly
 4. Repeat
 
+テスト駆動開発の中ではテストとリファクタリングは絡み合っている。コードを理解とメンテナンスしやすい形にリファクタリングときは、変更点を徹底的にテストして、挙動が変わっていないかを確認する。これはコードベースが大きくなったときにとても有用である。
+
 Testing and refactoring are intertwined in this process. As you refactor your code to make it more understandable or maintainable, you need to test your changes thoroughly to ensure that you haven't altered the behavior of your functions. This can be incredibly useful as the codebase grows.
 
 ###  Naming Conventions
 
 #### Comments
+
+コードにコメントを書くことについて述べます。プログラミングにコメントは必要不可欠なものだが、誤った使用をされることも多い。不適切な命名規則などのソースコードの基礎となる部分に問題があるから、不必要にコメントする必要が出てしまうのだ。しかしながら、コメントが"必要"かどうかはそのコードがどのくらい適切に書かれているかというその人の主観に左右される。たとえば、うまく書かれたコードでも、ロジックが複雑で何が起こっているのかを明確にするためにコメントを書く。その様な場合、コメントは"有用"であり、必要だと言える。
+
 I'd like to first address the topic of commenting code, which is an essential practice but tends to be misapplied. Unnecessary comments can indicate problems with the underlying code, such as the use of poor naming conventions. However, whether or not a particular comment is "necessary" is somewhat subjective and depends on how legibly the code was written. For example, the logic of well-written code may still be so complex that it requires a comment to clarify what is going on. In that case, one might argue that the comment is <em>helpful</em> and therefore necessary.
+
+`gofmt`に従うと、Goではすべてのpublicな変数や関数にはアノテーションを付けるべきだとされる。コードを書く際に一貫したルールを与えてくれるため良いアイデアだと言える。しかしながらたコメントと自動生成されたドキュメントは区別していたい。ドキュメントのためのアノテーションコメントは、
+
+Goでは、`gofmt`によると、<em>すべての</em>パブリックな変数や関数にはアノテーションを付けるべきだとされています。これは、コードを文書化するための一貫したルールを与えてくれるので、全く問題ないと思います。しかし、私は常に、自動生成されたドキュメントを有効にするコメントと、<em>その他すべて</em>のコメントを区別したいと考えています。ドキュメントのための注釈コメントは、ドキュメントのように書かれるべきです&mdash;抽象度が高く、コードの論理的な実装にはできるだけ関係しないものでなければなりません。
 
 In Go, according to `gofmt`, <em>all</em> public variables and functions should be annotated. I think this is absolutely fine, as it gives us consistent rules for documenting our code. However, I always want to distinguish between comments that enable auto-generated documentation and <em>all other</em> comments. Annotation comments, for documentation, should be written like documentation&mdash;they should be at a high level of abstraction and concern the logical implementation of the code as little as possible.
 
+理解しやすく表現力があるように書かれていることを確認することや説明することに対してほかの方法があるからだ。もしコードがそのようなものでない場合、複雑なロジックを説明するためのコメントを書くことを受け入れる人もいる。残念なことに、それらは役に立たない。1つに、多くの人はコメントを読まないことだ。
+
+というのも、コードを説明し、理解しやすく、表現力豊かに書かれていることを確認する方法は他にもあるからです。コードがそのどちらでもない場合、複雑な論理を説明するコメントを導入することを許容できると考える人もいます。しかし、残念ながら、それはあまり役に立ちません。多くの人はコメントを読まないでしょう。コメントはコードをレビューする際に非常に邪魔になるからです。さらに、想像できるように、開発者は、コメントの付いた不明瞭なコードをレビューすることを強いられたら、あまり嬉しくないでしょう。あなたのコードが何をしているのかを理解するために読まなければならない部分が少なければ少ないほど、開発者にとっては好都合です。
+
 I say this because there are other ways to explain code and ensure that it's being written comprehensibly and expressively. If the code is neither of those, some people find it acceptable to introduce a comment explaining the convoluted logic. Unfortunately, that doesn't really help. For one, most people simply won't read comments, as they tend to be very intrusive to the experience of reviewing code. Additionally, as you can imagine, a developer won't be too happy if they're forced to review unclear code that's been slathered with comments. The less that people have to read to understand what your code is doing, the better off they'll be.
 
+具体的な例を紹介する。以下はコードにコメントをつけるべきでない場合だ。
 Let's take a step back and look at some concrete examples. Here's how you <em>shouldn't</em> comment your code:
 
 ```go
-// iterate over the range 0 to 9 
-// and invoke the doSomething function
-// for each iteration
+// 0から9までイテレートして
+// doSomethingを実行する
+// for文処理
 for i := 0; i < 10; i++ {
   doSomething(i)
 }
 ```
 
+これは私がチュートリアルコメントと読んでいるもので、プログラミング言語(もしくは一般的なプログラミング)の基本的な機能を説明するチュートリアル的なものだ。この様なコメントは初心者には有用かもしれないアガ、プロダクションコードには全く無意味である。願わくば、この様なループ機能といったシンプルな機能すら理解していないプログラマと一緒の開発チームで仕事したくはない。
 This is what I like to call a <strong>tutorial comment</strong>; it's fairly common in tutorials, which often explain the low-level functionality of a language (or programming in general). While these comments may be helpful for beginners, they're absolutely useless in production code. Hopefully, we aren't collaborating with programmers who don't understand something as simple as a looping construct by the time they've begun working on a development team. As programmers, we shouldn't have to read the comment to understand what's going on&mdash;we know that we're iterating over the range 0 to 9 because we can simply read the code. Hence the proverb:
 
 > <em>Document why, not how. &ndash; Venkat Subramaniam</em>
@@ -99,6 +118,7 @@ This is what I like to call a <strong>tutorial comment</strong>; it's fairly com
 Following this logic, we can now change our comment to explain <em>why</em> we are iterating from the range 0 to 9:
 
 ```go
+// 後続処理を行うための10のスレッドを初期化する
 // instatiate 10 threads to handle upcoming work load
 for i := 0; i < 10; i++ {
   doSomething(i)
